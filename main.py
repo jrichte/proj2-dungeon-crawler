@@ -3,6 +3,9 @@
 # Description: Holds main function for EE 551 Project 2.
 
 import pygame
+import displayFunctions as disp
+from Map import Map
+from Player import Player
 
 # classes to handle player/inventory, map, minimap, enemies?
 
@@ -16,7 +19,12 @@ def main():
     clock = pygame.time.Clock()
     running = True
 
-    player_pos = pygame.Vector2(screen.get_width() / 2, screen.get_height() / 2)
+    X_DIM = 16
+    Y_DIM = 16
+    map = Map(X_DIM, Y_DIM)
+    map.populateMap()
+    map.makeArray()
+    player = Player([int(X_DIM/2),int(Y_DIM/2)],0,3,[0])
 
     while running:
         # poll for events
@@ -24,42 +32,62 @@ def main():
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+            if event.type == pygame.KEYDOWN:
+                facing = player.GetFacing()
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_w]:
+                    if facing == 0:
+                        player.MoveCoordinates([-1, 0], map)
+                    elif facing == 1:
+                        player.MoveCoordinates([0, 1], map)
+                    elif facing == 2:
+                        player.MoveCoordinates([1, 0], map)
+                    elif facing == 3:
+                        player.MoveCoordinates([0, -1], map)
+                if keys[pygame.K_s]:
+                    if facing == 0:
+                        player.MoveCoordinates([1, 0], map)
+                    elif facing == 1:
+                        player.MoveCoordinates([0, -1], map)
+                    elif facing == 2:
+                        player.MoveCoordinates([-1, 0], map)
+                    elif facing == 3:
+                        player.MoveCoordinates([0, 1], map)
+                if keys[pygame.K_a]:
+                    if facing == 0:
+                        player.MoveCoordinates([0, -1], map)
+                    elif facing == 1:
+                        player.MoveCoordinates([-1, 0], map)
+                    elif facing == 2:
+                        player.MoveCoordinates([0, 1], map)
+                    elif facing == 3:
+                        player.MoveCoordinates([1, 0], map)
+                if keys[pygame.K_d]:
+                    if facing == 0:
+                        player.MoveCoordinates([0, 1], map)
+                    elif facing == 1:
+                        player.MoveCoordinates([1, 0], map)
+                    elif facing == 2:
+                        player.MoveCoordinates([0, -1], map)
+                    elif facing == 3:
+                        player.MoveCoordinates([-1, 0], map)
+                if keys[pygame.K_q]:
+                    player.RotateLeft()
+                if keys[pygame.K_e]:
+                    player.RotateRight()
 
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("purple")
 
         # RENDER YOUR GAME HERE
-        # draw squares of different colors in different locations to make ui elements
-
-        pygame.draw.circle(screen, "black", player_pos, 40)
-
-        BUTTON_SIZE = 48
-        pygame.draw.rect(screen, "blue", pygame.Rect(400, 250, BUTTON_SIZE, BUTTON_SIZE))
-        pygame.draw.rect(screen, "blue", pygame.Rect(450, 250, BUTTON_SIZE, BUTTON_SIZE))
-        pygame.draw.rect(screen, "blue", pygame.Rect(500, 250, BUTTON_SIZE, BUTTON_SIZE))
-        pygame.draw.rect(screen, "blue", pygame.Rect(400, 300, BUTTON_SIZE, BUTTON_SIZE))
-        pygame.draw.rect(screen, "blue", pygame.Rect(450, 300, BUTTON_SIZE, BUTTON_SIZE))
-        pygame.draw.rect(screen, "blue", pygame.Rect(500, 300, BUTTON_SIZE, BUTTON_SIZE))
-
-        VIEWPORT_XSIZE = 280
-        VIEWPORT_YSIZE = 240
-        pygame.draw.rect(screen, "green", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
-
-        MINIMAP_XSIZE = 160
-        MINIMAP_YSIZE = 120
-        pygame.draw.rect(screen, "red", pygame.Rect(395, 60, MINIMAP_XSIZE, MINIMAP_YSIZE))
+        # render UI
+        disp.drawButtons(screen)
+        disp.drawViewport(map, player, screen)
+        disp.drawMiniMap(map, player, screen)
 
 
+        # eventually update this part to handle button clicks
 
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_w]:
-            player_pos.y -= 300 * dt
-        if keys[pygame.K_s]:
-            player_pos.y += 300 * dt
-        if keys[pygame.K_a]:
-            player_pos.x -= 300 * dt
-        if keys[pygame.K_d]:
-            player_pos.x += 300 * dt
 
         # flip() the display to put your work on screen
         pygame.display.flip()
