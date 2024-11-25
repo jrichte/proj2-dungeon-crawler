@@ -44,7 +44,7 @@ def main():
                         player.MoveCoordinates([1, 0], map)
                     elif facing == 3:
                         player.MoveCoordinates([0, -1], map)
-                if keys[pygame.K_s]:
+                elif keys[pygame.K_s]:
                     if facing == 0:
                         player.MoveCoordinates([1, 0], map)
                     elif facing == 1:
@@ -53,7 +53,7 @@ def main():
                         player.MoveCoordinates([-1, 0], map)
                     elif facing == 3:
                         player.MoveCoordinates([0, 1], map)
-                if keys[pygame.K_a]:
+                elif keys[pygame.K_a]:
                     if facing == 0:
                         player.MoveCoordinates([0, -1], map)
                     elif facing == 1:
@@ -62,7 +62,7 @@ def main():
                         player.MoveCoordinates([0, 1], map)
                     elif facing == 3:
                         player.MoveCoordinates([1, 0], map)
-                if keys[pygame.K_d]:
+                elif keys[pygame.K_d]:
                     if facing == 0:
                         player.MoveCoordinates([0, 1], map)
                     elif facing == 1:
@@ -75,6 +75,50 @@ def main():
                     player.RotateLeft()
                 if keys[pygame.K_e]:
                     player.RotateRight()
+            # copying movement logic for mouse-based movement
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                facing = player.GetFacing()
+                pos = pygame.mouse.get_pos()
+                if pos[0] in range(400,450) and pos[1] in range(250,300):
+                    player.RotateLeft()
+                elif pos[0] in range(500,550) and pos[1] in range(250,300):
+                    player.RotateRight()
+                elif pos[0] in range(450,500) and pos[1] in range(250,300):
+                    if facing == 0:
+                        player.MoveCoordinates([-1, 0], map)
+                    elif facing == 1:
+                        player.MoveCoordinates([0, 1], map)
+                    elif facing == 2:
+                        player.MoveCoordinates([1, 0], map)
+                    elif facing == 3:
+                        player.MoveCoordinates([0, -1], map)
+                elif pos[0] in range(400, 450) and pos[1] in range(300, 350):
+                    if facing == 0:
+                        player.MoveCoordinates([0, -1], map)
+                    elif facing == 1:
+                        player.MoveCoordinates([-1, 0], map)
+                    elif facing == 2:
+                        player.MoveCoordinates([0, 1], map)
+                    elif facing == 3:
+                        player.MoveCoordinates([1, 0], map)
+                elif pos[0] in range(450, 500) and pos[1] in range(300, 350):
+                    if facing == 0:
+                        player.MoveCoordinates([1, 0], map)
+                    elif facing == 1:
+                        player.MoveCoordinates([0, -1], map)
+                    elif facing == 2:
+                        player.MoveCoordinates([-1, 0], map)
+                    elif facing == 3:
+                        player.MoveCoordinates([0, 1], map)
+                elif pos[0] in range(500, 550) and pos[1] in range(300, 350):
+                    if facing == 0:
+                        player.MoveCoordinates([0, 1], map)
+                    elif facing == 1:
+                        player.MoveCoordinates([1, 0], map)
+                    elif facing == 2:
+                        player.MoveCoordinates([0, -1], map)
+                    elif facing == 3:
+                        player.MoveCoordinates([-1, 0], map)
 
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("purple")

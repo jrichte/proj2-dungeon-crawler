@@ -66,48 +66,70 @@ def drawViewport(mapObject,playerObject,screen):
     mapLayoutArray = mapObject.getLayout()
     playerFacing = playerObject.GetFacing()
     playerCoords = playerObject.GetPosition()
+    # background fill
+    pygame.draw.rect(screen, "black", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
+    roomFloor = pygame.image.load('img/roomFloor.png').convert()
+    screen.blit(roomFloor,(60,60))
+    roomForward = pygame.image.load('img/roomForward.png').convert()
+    roomLeft = pygame.image.load('img/roomLeft.png').convert()
+    roomRight = pygame.image.load('img/roomRight.png').convert()
     # position is [y,x]
-    # current quirk - at left/upper edge, draw based on other side
     try:
         if playerFacing == 0:
-            if playerCoords[0]-1 < 0 or mapLayoutArray[playerCoords[0]-1,playerCoords[1]] == 0:
-                pygame.draw.rect(screen, "black", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
-            else:
-                pygame.draw.rect(screen, "grey", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
+            if not (playerCoords[0]-1 >= 0 and mapLayoutArray[playerCoords[0]-1,playerCoords[1]] != 0):
+                screen.blit(roomForward, (60, 60))
+            if not (playerCoords[1] - 1 >= 0 and mapLayoutArray[playerCoords[0], playerCoords[1]-1] != 0):
+                screen.blit(roomLeft, (60, 60))
+            if not (mapLayoutArray[playerCoords[0], playerCoords[1]+1] != 0):
+                screen.blit(roomRight, (60, 60))
             return
         elif playerFacing == 1:
-            if mapLayoutArray[playerCoords[0],playerCoords[1]+1] == 0:
-                pygame.draw.rect(screen, "black", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
-            else:
-                pygame.draw.rect(screen, "grey", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
+            if not (mapLayoutArray[playerCoords[0],playerCoords[1]+1] != 0):
+                screen.blit(roomForward, (60, 60))
+            if not (playerCoords[0] - 1 >= 0 and mapLayoutArray[playerCoords[0]-1, playerCoords[1]] != 0):
+                screen.blit(roomLeft, (60, 60))
+            if not (mapLayoutArray[playerCoords[0]+1, playerCoords[1]] != 0):
+                screen.blit(roomRight, (60, 60))
             return
         elif playerFacing == 2:
-            if mapLayoutArray[playerCoords[0]+1,playerCoords[1]] == 0:
-                pygame.draw.rect(screen, "black", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
-            else:
-                pygame.draw.rect(screen, "grey", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
+            if not (mapLayoutArray[playerCoords[0]+1,playerCoords[1]] != 0):
+                screen.blit(roomForward, (60, 60))
+            if not (mapLayoutArray[playerCoords[0], playerCoords[1]+1] != 0):
+                screen.blit(roomLeft, (60, 60))
+            if not (playerCoords[1] - 1 >= 0 and mapLayoutArray[playerCoords[0], playerCoords[1]-1] != 0):
+                screen.blit(roomRight, (60, 60))
             return
         elif playerFacing == 3:
-            if playerCoords[1]-1 < 0 or mapLayoutArray[playerCoords[0],playerCoords[1]-1] == 0:
-                pygame.draw.rect(screen, "black", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
-            else:
-                pygame.draw.rect(screen, "grey", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
+            if not (playerCoords[1]-1 >= 0 and mapLayoutArray[playerCoords[0],playerCoords[1]-1] != 0):
+                screen.blit(roomForward, (60, 60))
+            if not (mapLayoutArray[playerCoords[0]+1, playerCoords[1]] != 0):
+                screen.blit(roomLeft, (60, 60))
+            if not (playerCoords[0] - 1 >= 0 and mapLayoutArray[playerCoords[0]-1, playerCoords[1]] != 0):
+                screen.blit(roomRight, (60, 60))
             return
     except IndexError:
-        pygame.draw.rect(screen, "black", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
+        return
+        #pygame.draw.rect(screen, "black", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
     else:
         return
 
+# deprecated variable
 BUTTON_SIZE = 48
 def drawButtons(screen):
     """
     Draws movement buttons.
     :param screen: Display to draw onto.
     """
-    pygame.draw.rect(screen, "blue", pygame.Rect(400, 250, BUTTON_SIZE, BUTTON_SIZE))
-    pygame.draw.rect(screen, "blue", pygame.Rect(450, 250, BUTTON_SIZE, BUTTON_SIZE))
-    pygame.draw.rect(screen, "blue", pygame.Rect(500, 250, BUTTON_SIZE, BUTTON_SIZE))
-    pygame.draw.rect(screen, "blue", pygame.Rect(400, 300, BUTTON_SIZE, BUTTON_SIZE))
-    pygame.draw.rect(screen, "blue", pygame.Rect(450, 300, BUTTON_SIZE, BUTTON_SIZE))
-    pygame.draw.rect(screen, "blue", pygame.Rect(500, 300, BUTTON_SIZE, BUTTON_SIZE))
+    lTurnButton = pygame.image.load('img/buttonLTurn.png').convert()
+    screen.blit(lTurnButton,(400,250))
+    upButton = pygame.image.load('img/buttonUp.png').convert()
+    screen.blit(upButton,(450,250))
+    rTurnButton = pygame.image.load('img/buttonRTurn.png').convert()
+    screen.blit(rTurnButton,(500,250))
+    leftButton = pygame.image.load('img/buttonLeft.png').convert()
+    screen.blit(leftButton,(400,300))
+    downButton = pygame.image.load('img/buttonDown.png').convert()
+    screen.blit(downButton,(450,300))
+    rightButton = pygame.image.load('img/buttonRight.png').convert()
+    screen.blit(rightButton,(500,300))
     return
