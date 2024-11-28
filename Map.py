@@ -1,5 +1,5 @@
 # Authors: Joshua R., Grant S.
-# Last Updated: 11-17
+# Last Updated: 11-28
 # Description: Map superclass for map generation
 
 #importing random library for map generation
@@ -8,6 +8,10 @@ import random
 import numpy as np
 #importing list index supporter function
 from supporterFunctions import indexExists
+#importing Room class to be used in populating map
+from Room import Room
+#importing Copy module to be used in creating copy of layout
+import copy
 
 class Map():
 
@@ -17,6 +21,7 @@ class Map():
         #Storing sizeX and sizeY for later use in populate map
         self._sizeX = sizeX
         self._sizeY = sizeY
+        self._roomData = []
 
     #GETTERS
     #layout Getter
@@ -28,6 +33,9 @@ class Map():
     #sizeY Getter
     def getSizeY(self):
         return self._sizeY
+    #roomData Getter
+    def getRoomData(self):
+        return self._roomData
 
     # Function to convert list into more palatable array
     def makeArray(self):
@@ -61,9 +69,6 @@ class Map():
             currentY = basePositionY - 1
         #populating random starting side
         self._layout[currentX][currentY] = 1
-
-
-        self.makeArray()
 
         #Randomly creating x rooms for first branch
         #[x is the sum of both dimensions of the map divided by 2, or until no possible moves can be made]
@@ -247,13 +252,28 @@ class Map():
                             currentY = currentY - 1
                             break
 
+    #Create Room Data Function
+    def createRoomData(self):
+
+        #Creating new mimic of layout
+        x = copy.deepcopy(self._layout)
+        self._roomData = x
+        #Iterating through layout mimic to fill with objects
+        for rowNum, row in enumerate(self._roomData):
+            for colNum, col in enumerate(self._roomData):
+                if self._roomData[rowNum][colNum] == 1:
+                    self._roomData[rowNum][colNum] = Room()
+
 
 #Testing runs
 """
-dimX = int(input("Please input a dimension for the X size of your map"))
-dimY = int(input("Please input a dimension for the Y size of your map"))
+dimX = int(input("Please input a dimension for the X size of your map: "))
+dimY = int(input("Please input a dimension for the Y size of your map: "))
 x=Map(dimY,dimX) #Size X and Y are actually reversed and should be passed as reversed upon player input
 x.populateMap()
+x.createRoomData()
+#MAKE ARRAY MUST BE CALLED AFTER CREATE ROOM DATA
 x.makeArray()
 print(f"{x.getLayout()}")
+print(f"{x.getRoomData()}")
 """
