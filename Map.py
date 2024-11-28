@@ -45,22 +45,25 @@ class Map():
 
         #up branch
         if side == 1:
-            currentX = basePositionX
-            currentY = basePositionY - 1
-        #down branch
-        elif side == 2:
-            currentX = basePositionX
-            currentY = basePositionY + 1
-        #right branch
-        elif side == 3:
-            currentX = basePositionX + 1
-            currentY = basePositionY
-        #left branch
-        elif side == 4:
             currentX = basePositionX - 1
             currentY = basePositionY
+        #down branch
+        elif side == 2:
+            currentX = basePositionX + 1
+            currentY = basePositionY
+        #right branch
+        elif side == 3:
+            currentX = basePositionX
+            currentY = basePositionY + 1
+        #left branch
+        elif side == 4:
+            currentX = basePositionX
+            currentY = basePositionY - 1
         #populating random starting side
-        self._layout[currentY][currentX] = 1
+        self._layout[currentX][currentY] = 1
+
+
+        self.makeArray()
 
         #Randomly creating x rooms for first branch
         #[x is the sum of both dimensions of the map divided by 2, or until no possible moves can be made]
@@ -77,27 +80,27 @@ class Map():
 
             #DETERMINING POSSIBLE MOVEMENT OPTIONS
             #seeing if up is a valid index
-            if indexExists(self._layout,(currentY-1),(currentX)):
+            if indexExists(self._layout,(currentX - 1),(currentY)):
                 #seeing if up is already populated and not going to overflow into other end of list
-                if self._layout[currentY-1][currentX] != 1 and currentY != 0 :
+                if self._layout[currentX - 1][currentY] != 1 and currentX != 0 :
                     optionSet["up"] = 1
 
             #seeing if down is a valid index
-            if indexExists(self._layout,(currentY+1),(currentX)):
+            if indexExists(self._layout,(currentX + 1),(currentY)):
                 #seeing if down is already populated and not going to overflow into other end of list
-                if self._layout[currentY+1][currentX] != 1 and currentY != self._sizeY - 1:
+                if self._layout[currentX + 1][currentY] != 1 and currentX != self._sizeX - 1:
                     optionSet["down"] = 1
 
             #seeing if right is a valid index
-            if indexExists(self._layout, (currentY), (currentX+1)):
+            if indexExists(self._layout, (currentX), (currentY + 1)):
                 #seeing if right is already populated and not going to overflow into other end of list
-                if self._layout[currentY][currentX+1] != 1 and currentX != self._sizeX -1:
+                if self._layout[currentX][currentY + 1] != 1 and currentY != self._sizeY - 1:
                     optionSet["right"] = 1
 
             #seeing if left is a valid index
-            if indexExists(self._layout, (currentY), (currentX-1)):
+            if indexExists(self._layout, (currentX), (currentY - 1)):
                 #seeing if left is already populated and not going to overflow into other end of list
-                if self._layout[currentY][currentX-1] != 1 and currentX != 0:
+                if self._layout[currentX][currentY - 1] != 1 and currentY != 0:
                     optionSet["left"] = 1
 
             #determining how many possible moves can be made to randomly pick one, breaking if no moves can be made
@@ -110,23 +113,23 @@ class Map():
 
                     #If direction is up and up is valid
                     if direction == 1 and optionSet["up"] != 0:
-                        self._layout[currentY -1 ][currentX] = 1
-                        currentY = currentY - 1
+                        self._layout[currentX - 1][currentY] = 1
+                        currentX = currentX - 1
                         break
                     #If direction is down and down is valid
                     elif direction == 2 and optionSet["down"] != 0:
-                        self._layout[currentY + 1][currentX] = 1
-                        currentY = currentY +1
+                        self._layout[currentX + 1][currentY] = 1
+                        currentX = currentX + 1
                         break
                     #If direction is right and right is valid
                     elif direction == 3 and optionSet["right"] != 0:
-                        self._layout[currentY][currentX + 1] = 1
-                        currentX = currentX + 1
+                        self._layout[currentX][currentY + 1] = 1
+                        currentY = currentY + 1
                         break
                     #If direction is left and left is valid
                     elif direction == 4 and optionSet["left"] != 0:
-                        self._layout[currentY][currentX - 1] = 1
-                        currentX = currentX - 1
+                        self._layout[currentX][currentY - 1] = 1
+                        currentY = currentY - 1
                         break
 
         #SECOND BRANCH GENERATION
@@ -136,16 +139,16 @@ class Map():
         possibleGen = 0
 
         #up check
-        if self._layout[basePositionY-1][basePositionX] == 1:
+        if self._layout[basePositionX-1][basePositionY] == 1:
             possibleGen += 1
         #down check
-        if self._layout[basePositionY+1][basePositionX] == 1:
+        if self._layout[basePositionX+1][basePositionY] == 1:
             possibleGen += 1
         #right check
-        if self._layout[basePositionY][basePositionX+1] == 1:
+        if self._layout[basePositionX][basePositionY+1] == 1:
             possibleGen += 1
         #left check
-        if self._layout[basePositionY][basePositionX-1] == 1:
+        if self._layout[basePositionX][basePositionY-1] == 1:
             possibleGen += 1
 
         #Creating second branch for map by randomly selecting a side (if generation possible)
@@ -154,28 +157,28 @@ class Map():
                 side = random.randint(1,4)
 
                 #up branch
-                if side == 1 and self._layout[basePositionY-1][basePositionX] != 1:
-                    currentX = basePositionX
-                    currentY = basePositionY - 1
-                    break
-                #down branch
-                elif side == 2 and self._layout[basePositionY+1][basePositionX] !=1:
-                    currentX = basePositionX
-                    currentY = basePositionY + 1
-                    break
-                #right branch
-                elif side == 3 and self._layout[basePositionY][basePositionX+1] !=1:
-                    currentX = basePositionX + 1
-                    currentY = basePositionY
-                    break
-                #left branch
-                elif side == 4 and self._layout[basePositionY][basePositionX-1] !=1:
+                if side == 1 and self._layout[basePositionX-1][basePositionY] != 1:
                     currentX = basePositionX - 1
                     currentY = basePositionY
                     break
+                #down branch
+                elif side == 2 and self._layout[basePositionX+1][basePositionY] !=1:
+                    currentX = basePositionX + 1
+                    currentY = basePositionY
+                    break
+                #right branch
+                elif side == 3 and self._layout[basePositionX][basePositionY+1] !=1:
+                    currentX = basePositionX
+                    currentY = basePositionY + 1
+                    break
+                #left branch
+                elif side == 4 and self._layout[basePositionX][basePositionY-1] !=1:
+                    currentX = basePositionX
+                    currentY = basePositionY - 1
+                    break
 
             # populating random starting side
-            self._layout[currentY][currentX] = 1
+            self._layout[currentX][currentY] = 1
 
             # Randomly creating x rooms for second branch
             # [x is the sum of both dimensions of the map divided by 2, or until no possible moves can be made]
@@ -192,27 +195,27 @@ class Map():
 
                 # DETERMINING POSSIBLE MOVEMENT OPTIONS
                 # seeing if up is a valid index
-                if indexExists(self._layout, (currentY - 1), (currentX)):
+                if indexExists(self._layout, (currentX - 1), (currentY)):
                     # seeing if up is already populated and not going to overflow into other end of list
-                    if self._layout[currentY - 1][currentX] != 1 and currentY != 0:
+                    if self._layout[currentX - 1][currentY] != 1 and currentX != 0:
                         optionSet["up"] = 1
 
                 # seeing if down is a valid index
-                if indexExists(self._layout, (currentY + 1), (currentX)):
+                if indexExists(self._layout, (currentX + 1), (currentY)):
                     # seeing if down is already populated and not going to overflow into other end of list
-                    if self._layout[currentY + 1][currentX] != 1 and currentY != self._sizeY - 1:
+                    if self._layout[currentX + 1][currentY] != 1 and currentX != self._sizeX - 1:
                         optionSet["down"] = 1
 
                 # seeing if right is a valid index
-                if indexExists(self._layout, (currentY), (currentX + 1)):
+                if indexExists(self._layout, (currentX), (currentY + 1)):
                     # seeing if right is already populated and not going to overflow into other end of list
-                    if self._layout[currentY][currentX + 1] != 1 and currentX != self._sizeX - 1:
+                    if self._layout[currentX][currentY + 1] != 1 and currentX != self._sizeY - 1:
                         optionSet["right"] = 1
 
                 # seeing if left is a valid index
-                if indexExists(self._layout, (currentY), (currentX - 1)):
+                if indexExists(self._layout, (currentX), (currentY - 1)):
                     # seeing if left is already populated and not going to overflow into other end of list
-                    if self._layout[currentY][currentX - 1] != 1 and currentX != 0:
+                    if self._layout[currentX][currentY - 1] != 1 and currentY != 0:
                         optionSet["left"] = 1
 
                 #determining how many possible moves can be made to randomly pick one, braking if no moves can be made
@@ -225,29 +228,31 @@ class Map():
 
                         # If direction is up and up is valid
                         if direction == 1 and optionSet["up"] != 0:
-                            self._layout[currentY - 1][currentX] = 1
-                            currentY = currentY - 1
+                            self._layout[currentX - 1][currentY] = 1
+                            currentX = currentX - 1
                             break
                         # If direction is down and down is valid
                         elif direction == 2 and optionSet["down"] != 0:
-                            self._layout[currentY + 1][currentX] = 1
-                            currentY = currentY + 1
+                            self._layout[currentX + 1][currentY] = 1
+                            currentX = currentX + 1
                             break
                         # If direction is right and right is valid
                         elif direction == 3 and optionSet["right"] != 0:
-                            self._layout[currentY][currentX + 1] = 1
-                            currentX = currentX + 1
+                            self._layout[currentX][currentY + 1] = 1
+                            currentY = currentY + 1
                             break
                         # If direction is left and left is valid
                         elif direction == 4 and optionSet["left"] != 0:
-                            self._layout[currentY][currentX - 1] = 1
-                            currentX = currentX - 1
+                            self._layout[currentX][currentY - 1] = 1
+                            currentY = currentY - 1
                             break
 
 
 #Testing runs
 """
-x=Map(10,10)
+dimX = int(input("Please input a dimension for the X size of your map"))
+dimY = int(input("Please input a dimension for the Y size of your map"))
+x=Map(dimY,dimX) #Size X and Y are actually reversed and should be passed as reversed upon player input
 x.populateMap()
 x.makeArray()
 print(f"{x.getLayout()}")
