@@ -9,12 +9,18 @@ class Room:
 
     #Constructor
     def __init__(self):
+        #Initializing all room states
         self._isWood = False
         self. isStone = False
         self._isPuzzle = False
         self._isCombat = False
         self._isTreasure = False
         self._isNothing = False
+
+        #All rooms begin as unVisited
+        self._isVisited = False
+        #All rooms begin as uncleared
+        self._isClear = False
 
         #Random texture selection
         texture = random.randint(1,2)
@@ -57,3 +63,17 @@ class Room:
     #isTreasure
     def getisTreasure(self):
         return self._isTreasure
+    #isVisited
+    def getisVisited(self):
+        return self._isVisited
+    #isClear
+    def getisClear(self):
+        return self._isClear
+
+    #SETTERS
+    #setting isVisited true for when rooms are visited
+    def visited(self):
+        self._isVisited = True
+    #setting isClear true for when rooms are cleared
+    def cleared(self):
+        self._isClear = True
