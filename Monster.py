@@ -29,15 +29,15 @@ class Monster():
         for i in range(len(self._currentPosition):
             self._currentPosition[i] += movement[i]
     # combat test functions - return false for player failure, true for player success
-    def PlayerAttack(self, attackInput)
+    def PlayerAttack(self, attackInput):
         # if player attack coincides with monster defense, return false
-        for i in range(len(self._defenseType)
+        for i in range(len(self._defenseType):
             if attackInput == self._defenseType[i]:
                 return False
         return True
-    def PlayerDefense(self, defenseInput)
+    def PlayerDefense(self, defenseInput):
         # if player defense coincides with monster attack, return false
-        for i in range(len(self._attackType)
+        for i in range(len(self._attackType):
             if attackInput == self._attackType[i]:
                 return False
         return True
