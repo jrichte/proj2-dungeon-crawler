@@ -23,6 +23,7 @@ def main():
     Y_DIM = 16
     map = Map(X_DIM, Y_DIM)
     map.populateMap()
+    map.createRoomData()
     map.makeArray()
     player = Player([int(X_DIM/2),int(Y_DIM/2)],0,3,[0])
 

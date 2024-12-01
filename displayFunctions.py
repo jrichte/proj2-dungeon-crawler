@@ -147,9 +147,9 @@ def drawHealthBar(screen, player):
 
     #Drawing gray (border) under red under green rect for hp bar, Formatted (X start, Y start, Length, Width)
     #Ratio Applied to green bar length
-    pygame.draw.rect(screen, "gray", (60,325,250,35))
-    pygame.draw.rect(screen, "red", (90,330,220,25))
-    pygame.draw.rect(screen, "green", (90,330,220 * ratio, 25))
+    pygame.draw.rect(screen, "gray", (60,325,280,35))
+    pygame.draw.rect(screen, "red", (90,330,250,25))
+    pygame.draw.rect(screen, "green", (90,330,250 * ratio, 25))
 
     #Drawing health Icon
     healthIcon = pygame.image.load('img/HealthIcon.png').convert_alpha()
