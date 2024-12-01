@@ -11,11 +11,14 @@ class Player():
         # note that position is stored as [y,x]
         self.__currentPosition = startingPosition
         self.__currentFacing = startingFacing
+        self.__maxHP = startingHP
         self.__currentHP = startingHP
         self.__currentInventory = startingInventory
     # getter functions
     def GetHP(self):
         return self.__currentHP
+    def GetMaxHP(self):
+        return self.__maxHP
     def GetPosition(self):
         return self.__currentPosition
     def GetFacing(self):
@@ -25,6 +28,8 @@ class Player():
     # setter functions
     def ApplyHPChange(self, hpChange):
         self.__currentHP += hpChange
+    def ChangeMaxHP(self, hpAdjust):
+        self.__maxHP += hpAdjust
     def AddItemToInventory(self, newItem):
         self.__currentInventory.append(newItem)
     def RemoveItemFromInventory(self, removedItem):
@@ -55,5 +60,3 @@ class Player():
         self.__currentFacing += 1
         if self.__currentFacing > 3:
             self.__currentFacing = 0
-
-        

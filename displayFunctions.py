@@ -6,7 +6,6 @@ import pygame
 from Map import Map
 from Player import Player
 
-# hp display function
 # inventory display?
 
 MINIMAP_XSIZE = 160
@@ -133,3 +132,25 @@ def drawButtons(screen):
     rightButton = pygame.image.load('img/buttonRight.png').convert()
     screen.blit(rightButton,(500,300))
     return
+
+def drawHealthBar(screen, player):
+    """
+    Draws healthbar onto screen.
+    :param screen: Display to draw onto.
+    """
+    #Grabbing player current and max HP
+    maxHealth = player.GetMaxHP()
+    currentHealth = player.GetHP()
+
+    #Calculating health ratio
+    ratio = float(currentHealth/maxHealth)
+
+    #Drawing gray (border) under red under green rect for hp bar, Formatted (X start, Y start, Length, Width)
+    #Ratio Applied to green bar length
+    pygame.draw.rect(screen, "gray", (60,325,250,35))
+    pygame.draw.rect(screen, "red", (90,330,220,25))
+    pygame.draw.rect(screen, "green", (90,330,220 * ratio, 25))
+
+    #Drawing health Icon
+    healthIcon = pygame.image.load('img/HealthIcon.png').convert_alpha()
+    screen.blit(healthIcon,(65,333))
