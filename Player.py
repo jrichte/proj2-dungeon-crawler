@@ -4,6 +4,7 @@
 
 import pygame
 from Map import Map
+from Room import Room
 import supporterFunctions
 
 class Player():
@@ -36,6 +37,8 @@ class Player():
         self.__currentInventory.remove(removedItem)
     def MoveCoordinates(self, movement, mapObject):
         mapLayout = mapObject.getLayout()
+        roomData = mapObject.getRoomData()
+        roomData[self.__currentPosition[0]][self.__currentPosition[1]].cleared()
         for i in range(len(movement)):
             if movement[i]:
                 # check if we'd go out of bounds above or left
@@ -46,6 +49,7 @@ class Player():
                     try:
                         if mapLayout[(self.__currentPosition[0] + movement[0]),(self.__currentPosition[1] + movement[1])] != 0:
                                 self.__currentPosition[i] += movement[i]
+                                roomData[self.__currentPosition[0]][self.__currentPosition[1]].visited()
                     except IndexError:
                         return
     def RotateLeft(self):

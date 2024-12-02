@@ -49,7 +49,7 @@ class Room:
     def getisWood(self):
         return self._isWood
     #isStone
-    def getisWood(self):
+    def getisStone(self):
         return self._isStone
     #isPuzzle
     def getisPuzzle(self):

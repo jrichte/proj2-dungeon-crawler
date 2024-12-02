@@ -5,6 +5,7 @@
 import pygame
 from Map import Map
 from Player import Player
+from Room import Room
 
 # inventory display?
 
@@ -22,6 +23,7 @@ def drawMiniMap(mapObject, playerObject, screen):
     """
     pygame.draw.rect(screen, "red", pygame.Rect(MINIMAP_XPOS, MINIMAP_YPOS, MINIMAP_XSIZE, MINIMAP_YSIZE))
     if isinstance(mapObject,Map):
+        roomData = mapObject.getRoomData()
         mapLayoutArray = mapObject.getLayout()
         mapSize = mapLayoutArray.shape
         xSize = MINIMAP_XSIZE / mapSize[1]
@@ -33,6 +35,8 @@ def drawMiniMap(mapObject, playerObject, screen):
                 rect = pygame.Rect(xPos,yPos,xSize,ySize)
                 if mapLayoutArray[j][i] == 0:
                     pygame.draw.rect(screen, "black", rect)
+                elif roomData[j][i].getisVisited() == False:
+                    pygame.draw.rect(screen, "red", rect)
                 else:
                     pygame.draw.rect(screen, "blue", rect)
     # now, draw player
@@ -67,12 +71,21 @@ def drawViewport(mapObject,playerObject,screen):
     playerCoords = playerObject.GetPosition()
     # background fill
     pygame.draw.rect(screen, "black", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
-    roomFloor = pygame.image.load('img/roomFloor.png').convert()
-    screen.blit(roomFloor,(60,60))
-    roomForward = pygame.image.load('img/roomForward.png').convert()
-    roomLeft = pygame.image.load('img/roomLeft.png').convert()
-    roomRight = pygame.image.load('img/roomRight.png').convert()
+    roomData = mapObject.getRoomData()[playerCoords[0]][playerCoords[1]]
+    if roomData.getisWood():
+        roomFloor = pygame.image.load('img/roomFloorWood.png').convert()
+        screen.blit(roomFloor,(60,60))
+        roomForward = pygame.image.load('img/roomForwardWood.png').convert()
+        roomLeft = pygame.image.load('img/roomLeftWood.png').convert()
+        roomRight = pygame.image.load('img/roomRightWood.png').convert()
+    elif roomData.getisStone():
+        roomFloor = pygame.image.load('img/roomFloor.png').convert()
+        screen.blit(roomFloor, (60, 60))
+        roomForward = pygame.image.load('img/roomForward.png').convert()
+        roomLeft = pygame.image.load('img/roomLeft.png').convert()
+        roomRight = pygame.image.load('img/roomRight.png').convert()
     # position is [y,x]
+    # draw walls
     try:
         if playerFacing == 0:
             if not (playerCoords[0]-1 >= 0 and mapLayoutArray[playerCoords[0]-1,playerCoords[1]] != 0):
@@ -81,7 +94,6 @@ def drawViewport(mapObject,playerObject,screen):
                 screen.blit(roomLeft, (60, 60))
             if not (mapLayoutArray[playerCoords[0], playerCoords[1]+1] != 0):
                 screen.blit(roomRight, (60, 60))
-            return
         elif playerFacing == 1:
             if not (mapLayoutArray[playerCoords[0],playerCoords[1]+1] != 0):
                 screen.blit(roomForward, (60, 60))
@@ -89,7 +101,6 @@ def drawViewport(mapObject,playerObject,screen):
                 screen.blit(roomLeft, (60, 60))
             if not (mapLayoutArray[playerCoords[0]+1, playerCoords[1]] != 0):
                 screen.blit(roomRight, (60, 60))
-            return
         elif playerFacing == 2:
             if not (mapLayoutArray[playerCoords[0]+1,playerCoords[1]] != 0):
                 screen.blit(roomForward, (60, 60))
@@ -97,7 +108,6 @@ def drawViewport(mapObject,playerObject,screen):
                 screen.blit(roomLeft, (60, 60))
             if not (playerCoords[1] - 1 >= 0 and mapLayoutArray[playerCoords[0], playerCoords[1]-1] != 0):
                 screen.blit(roomRight, (60, 60))
-            return
         elif playerFacing == 3:
             if not (playerCoords[1]-1 >= 0 and mapLayoutArray[playerCoords[0],playerCoords[1]-1] != 0):
                 screen.blit(roomForward, (60, 60))
@@ -105,9 +115,20 @@ def drawViewport(mapObject,playerObject,screen):
                 screen.blit(roomLeft, (60, 60))
             if not (playerCoords[0] - 1 >= 0 and mapLayoutArray[playerCoords[0]-1, playerCoords[1]] != 0):
                 screen.blit(roomRight, (60, 60))
-            return
+        # draw encounter if room not cleared
+        if not roomData.getisClear():
+            if roomData.getisPuzzle():
+                roomImage = pygame.image.load('img/puzzleImage.png').convert()
+                screen.blit(roomImage, (102, 102))
+            elif roomData.getisCombat():
+                roomImage = pygame.image.load('img/combatImage.png').convert()
+                screen.blit(roomImage, (102, 102))
+            elif roomData.getisTreasure():
+                roomImage = pygame.image.load('img/treasureImage.png').convert()
+                screen.blit(roomImage, (102, 102))
     except IndexError:
-        return
+        # pointless line to silence error
+        silencer = True
         #pygame.draw.rect(screen, "black", pygame.Rect(60, 60, VIEWPORT_XSIZE, VIEWPORT_YSIZE))
     else:
         return
