@@ -1,11 +1,12 @@
 # Authors: Joshua R., Grant S.
-# Last Updated: 11-11
+# Last Updated: 12-2
 # Description: Holds functions for displaying UI elements.
 
 import pygame
 from Map import Map
 from Player import Player
 from Room import Room
+from puzzle import buttonPuzzle
 
 # inventory display?
 
@@ -118,6 +119,11 @@ def drawViewport(mapObject,playerObject,screen):
         # draw encounter if room not cleared
         if not roomData.getisClear():
             if roomData.getisPuzzle():
+
+                #Button puzzle Test
+                #(Need to determine best way to trigger and deal with puzzles/combat)
+                #buttonPuzzle(screen,playerCoords,roomData)
+
                 roomImage = pygame.image.load('img/puzzleImage.png').convert()
                 screen.blit(roomImage, (102, 102))
             elif roomData.getisCombat():
