@@ -1,5 +1,5 @@
 # Authors: Joshua R., Grant S.
-# Last Updated: 12-2
+# Last Updated: 12-3
 # Description: Holds functions for puzzle interactions.
 
 import pygame
@@ -15,16 +15,18 @@ def puzzlePlaceholder(screen):
 
     #^^^ needs every function to intake player object and roomdata object, which already exist in main!!!
 
+def buttonInit():
+    r = random.randint(1, 6)
+    return r
 
-"""
-def buttonPuzzle(screen):
+def buttonPuzzle(screen,r):
 
     #Tablet import
     tablet = pygame.image.load('img/puzzleTablet.png').convert()
     tablet.set_colorkey((255,255,255))
     screen.blit(tablet,(116,150))
 
-    r = random.randint(1, 6)
+    #r = random.randint(1, 6)
     #Random sequence selection
     if r == 1:
         colorSequence = ['Red','Blue','Green']
@@ -62,4 +64,3 @@ def buttonPuzzle(screen):
     #Need logic to determine which color sequence, and then test for player clicks in the correct order (i.e buttons don't work until player presses previous)
     #Upon player button press, we need to take the playerCoords index, and pass that into the roomData object to trigger an isclear for the room which will unpause game
     #I.e^ roomData[playerCoords[0]][playerCoords[1]].isClear()
-"""

@@ -1,5 +1,5 @@
 # Authors: Joshua R., Grant S.
-# Last Updated: 11-11
+# Last Updated: 12-3
 # Description: Holds main function for EE 551 Project 2.
 
 import pygame
@@ -33,124 +33,142 @@ def main():
     map.createRoomData()
     map.makeArray()
     player = Player([int(X_DIM/2),int(Y_DIM/2)],0,3,[0])
-
+    map.getRoomData()[int(X_DIM/2)][int(Y_DIM/2)].visited()
+    map.getRoomData()[int(X_DIM/2)][int(Y_DIM/2)].cleared()
+    encounterInit = False
     while running:
+        #Puzzle/Combat/Treasure logic
+        #Important vars
+        playerCoords = player.GetPosition()
+        roomData = map.getRoomData()[playerCoords[0]][playerCoords[1]]
+
+        if not roomData.getisClear():
+            # Setting player cleared as false
+            player.setClearedFalse()
+
+
         # poll for events
-        # pygame.QUIT event means the user clicked X to close your window
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                running = False
-            if event.type == pygame.KEYDOWN:
-                facing = player.GetFacing()
-                keys = pygame.key.get_pressed()
+        if player.GetCleared() == True:
+            # reset flag for initializing room
+            encounterInit = False
+            # pygame.QUIT event means the user clicked X to close your window
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.KEYDOWN:
+                    facing = player.GetFacing()
+                    keys = pygame.key.get_pressed()
 
-                #W key press (move forward facing considered)
-                if keys[pygame.K_w]:
-                    if facing == 0:
-                        player.MoveCoordinates([-1, 0], map)
-                    elif facing == 1:
-                        player.MoveCoordinates([0, 1], map)
-                    elif facing == 2:
-                        player.MoveCoordinates([1, 0], map)
-                    elif facing == 3:
-                        player.MoveCoordinates([0, -1], map)
+                    #W key press (move forward facing considered)
+                    if keys[pygame.K_w]:
+                        if facing == 0:
+                            player.MoveCoordinates([-1, 0], map)
+                        elif facing == 1:
+                            player.MoveCoordinates([0, 1], map)
+                        elif facing == 2:
+                            player.MoveCoordinates([1, 0], map)
+                        elif facing == 3:
+                            player.MoveCoordinates([0, -1], map)
 
-                #S key press (move backward facing considered)
-                elif keys[pygame.K_s]:
-                    if facing == 0:
-                        player.MoveCoordinates([1, 0], map)
-                    elif facing == 1:
-                        player.MoveCoordinates([0, -1], map)
-                    elif facing == 2:
-                        player.MoveCoordinates([-1, 0], map)
-                    elif facing == 3:
-                        player.MoveCoordinates([0, 1], map)
+                    #S key press (move backward facing considered)
+                    elif keys[pygame.K_s]:
+                        if facing == 0:
+                            player.MoveCoordinates([1, 0], map)
+                        elif facing == 1:
+                            player.MoveCoordinates([0, -1], map)
+                        elif facing == 2:
+                            player.MoveCoordinates([-1, 0], map)
+                        elif facing == 3:
+                            player.MoveCoordinates([0, 1], map)
 
-                #A key press (move left facing considered)
-                elif keys[pygame.K_a]:
-                    if facing == 0:
-                        player.MoveCoordinates([0, -1], map)
-                    elif facing == 1:
-                        player.MoveCoordinates([-1, 0], map)
-                    elif facing == 2:
-                        player.MoveCoordinates([0, 1], map)
-                    elif facing == 3:
-                        player.MoveCoordinates([1, 0], map)
+                    #A key press (move left facing considered)
+                    elif keys[pygame.K_a]:
+                        if facing == 0:
+                            player.MoveCoordinates([0, -1], map)
+                        elif facing == 1:
+                            player.MoveCoordinates([-1, 0], map)
+                        elif facing == 2:
+                            player.MoveCoordinates([0, 1], map)
+                        elif facing == 3:
+                            player.MoveCoordinates([1, 0], map)
 
-                #D key press (move right facing considered)
-                elif keys[pygame.K_d]:
-                    if facing == 0:
-                        player.MoveCoordinates([0, 1], map)
-                    elif facing == 1:
-                        player.MoveCoordinates([1, 0], map)
-                    elif facing == 2:
-                        player.MoveCoordinates([0, -1], map)
-                    elif facing == 3:
-                        player.MoveCoordinates([-1, 0], map)
+                    #D key press (move right facing considered)
+                    elif keys[pygame.K_d]:
+                        if facing == 0:
+                            player.MoveCoordinates([0, 1], map)
+                        elif facing == 1:
+                            player.MoveCoordinates([1, 0], map)
+                        elif facing == 2:
+                            player.MoveCoordinates([0, -1], map)
+                        elif facing == 3:
+                            player.MoveCoordinates([-1, 0], map)
 
-                #Q key press (rotate counter-clockwise)
-                if keys[pygame.K_q]:
-                    player.RotateLeft()
-                #E key press (rotate clockwise)
-                if keys[pygame.K_e]:
-                    player.RotateRight()
+                    #Q key press (rotate counter-clockwise)
+                    if keys[pygame.K_q]:
+                        player.RotateLeft()
+                    #E key press (rotate clockwise)
+                    if keys[pygame.K_e]:
+                        player.RotateRight()
 
-            # copying movement logic for mouse-based movement
-            if event.type == pygame.MOUSEBUTTONDOWN:
-                facing = player.GetFacing()
-                pos = pygame.mouse.get_pos()
+                # copying movement logic for mouse-based movement
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    facing = player.GetFacing()
+                    pos = pygame.mouse.get_pos()
 
-                #Rotate counter-clockwise button
-                if pos[0] in range(400,450) and pos[1] in range(250,300):
-                    player.RotateLeft()
+                    #Rotate counter-clockwise button
+                    if pos[0] in range(400,450) and pos[1] in range(250,300):
+                        player.RotateLeft()
 
-                #Rotate clockwise button
-                elif pos[0] in range(500,550) and pos[1] in range(250,300):
-                    player.RotateRight()
+                    #Rotate clockwise button
+                    elif pos[0] in range(500,550) and pos[1] in range(250,300):
+                        player.RotateRight()
 
-                #Move forward button (facing considered)
-                elif pos[0] in range(450,500) and pos[1] in range(250,300):
-                    if facing == 0:
-                        player.MoveCoordinates([-1, 0], map)
-                    elif facing == 1:
-                        player.MoveCoordinates([0, 1], map)
-                    elif facing == 2:
-                        player.MoveCoordinates([1, 0], map)
-                    elif facing == 3:
-                        player.MoveCoordinates([0, -1], map)
+                    #Move forward button (facing considered)
+                    elif pos[0] in range(450,500) and pos[1] in range(250,300):
+                        if facing == 0:
+                            player.MoveCoordinates([-1, 0], map)
+                        elif facing == 1:
+                            player.MoveCoordinates([0, 1], map)
+                        elif facing == 2:
+                            player.MoveCoordinates([1, 0], map)
+                        elif facing == 3:
+                            player.MoveCoordinates([0, -1], map)
 
-                #Move left button (facing considered)
-                elif pos[0] in range(400, 450) and pos[1] in range(300, 350):
-                    if facing == 0:
-                        player.MoveCoordinates([0, -1], map)
-                    elif facing == 1:
-                        player.MoveCoordinates([-1, 0], map)
-                    elif facing == 2:
-                        player.MoveCoordinates([0, 1], map)
-                    elif facing == 3:
-                        player.MoveCoordinates([1, 0], map)
+                    #Move left button (facing considered)
+                    elif pos[0] in range(400, 450) and pos[1] in range(300, 350):
+                        if facing == 0:
+                            player.MoveCoordinates([0, -1], map)
+                        elif facing == 1:
+                            player.MoveCoordinates([-1, 0], map)
+                        elif facing == 2:
+                            player.MoveCoordinates([0, 1], map)
+                        elif facing == 3:
+                            player.MoveCoordinates([1, 0], map)
 
-                #Move back button (facing considered)
-                elif pos[0] in range(450, 500) and pos[1] in range(300, 350):
-                    if facing == 0:
-                        player.MoveCoordinates([1, 0], map)
-                    elif facing == 1:
-                        player.MoveCoordinates([0, -1], map)
-                    elif facing == 2:
-                        player.MoveCoordinates([-1, 0], map)
-                    elif facing == 3:
-                        player.MoveCoordinates([0, 1], map)
+                    #Move back button (facing considered)
+                    elif pos[0] in range(450, 500) and pos[1] in range(300, 350):
+                        if facing == 0:
+                            player.MoveCoordinates([1, 0], map)
+                        elif facing == 1:
+                            player.MoveCoordinates([0, -1], map)
+                        elif facing == 2:
+                            player.MoveCoordinates([-1, 0], map)
+                        elif facing == 3:
+                            player.MoveCoordinates([0, 1], map)
 
-                #Move right button (facing considered)
-                elif pos[0] in range(500, 550) and pos[1] in range(300, 350):
-                    if facing == 0:
-                        player.MoveCoordinates([0, 1], map)
-                    elif facing == 1:
-                        player.MoveCoordinates([1, 0], map)
-                    elif facing == 2:
-                        player.MoveCoordinates([0, -1], map)
-                    elif facing == 3:
-                        player.MoveCoordinates([-1, 0], map)
+                    #Move right button (facing considered)
+                    elif pos[0] in range(500, 550) and pos[1] in range(300, 350):
+                        if facing == 0:
+                            player.MoveCoordinates([0, 1], map)
+                        elif facing == 1:
+                            player.MoveCoordinates([1, 0], map)
+                        elif facing == 2:
+                            player.MoveCoordinates([0, -1], map)
+                        elif facing == 3:
+                            player.MoveCoordinates([-1, 0], map)
+
+
+
 
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("purple")
@@ -162,24 +180,42 @@ def main():
         disp.drawMiniMap(map, player, screen)
         disp.drawHealthBar(screen, player)
 
-        #Puzzle/Combat/Treasure logic
-        #Important vars
-        playerCoords = player.GetPosition()
-        roomData = map.getRoomData()[playerCoords[0]][playerCoords[1]]
 
-        # draw encounter and provide logic if room not cleared
-        if not roomData.getisClear():
-            #Setting player cleared as false
-            player.setClearedFalse()
-            #puzzle rooms
-            if roomData.getisPuzzle():
-                puzzlePlaceholder(screen)
-            #combat rooms
-            elif roomData.getisCombat():
-                combatPlaceholder(screen)
-            #treasure rooms
-            elif roomData.getisTreasure():
-                treasurePlaceholder(screen)
+        if player.GetCleared() == False:
+            # initialize each encounter once
+            if encounterInit == False:
+                # draw encounter and provide logic if room not cleared
+                    # puzzle rooms
+                if roomData.getisPuzzle():
+                    randState = puzzle.buttonInit()
+                    # combat rooms
+                elif roomData.getisCombat():
+                    combatPlaceholder(screen)
+                    # treasure rooms
+                elif roomData.getisTreasure():
+                    treasurePlaceholder(screen)
+                encounterInit = True
+            else:
+                if roomData.getisPuzzle():
+                    puzzle.buttonPuzzle(screen,randState)
+                    # combat rooms
+                elif roomData.getisCombat():
+                    combatPlaceholder(screen)
+                    # treasure rooms
+                elif roomData.getisTreasure():
+                    treasurePlaceholder(screen)
+
+
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
+                if event.type == pygame.MOUSEBUTTONDOWN:
+                    pos = pygame.mouse.get_pos()
+                    coords = player.GetPosition()
+                    if pos[0] in range(60,340) and pos[1] in range(60,300):
+                        player.setClearedTrue()
+                        map.getRoomData()[coords[0]][coords[1]].cleared()
+
 
         """
         Can add logic to above if statement for different random puzzle room and monster room spawns potentially
