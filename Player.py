@@ -15,6 +15,8 @@ class Player():
         self.__maxHP = startingHP
         self.__currentHP = startingHP
         self.__currentInventory = startingInventory
+        self.__cleared = True
+
     # getter functions
     def GetHP(self):
         return self.__currentHP
@@ -26,6 +28,8 @@ class Player():
         return self.__currentFacing
     def GetInventory(self):
         return self.__currentInventory
+    def GetCleared(self):
+        return self.__cleared
     # setter functions
     def ApplyHPChange(self, hpChange):
         self.__currentHP += hpChange
@@ -35,6 +39,10 @@ class Player():
         self.__currentInventory.append(newItem)
     def RemoveItemFromInventory(self, removedItem):
         self.__currentInventory.remove(removedItem)
+    def setClearedTrue(self):
+        self.__cleared = True
+    def setClearedFalse(self):
+        self.__cleared = False
     def MoveCoordinates(self, movement, mapObject):
         mapLayout = mapObject.getLayout()
         roomData = mapObject.getRoomData()

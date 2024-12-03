@@ -6,7 +6,6 @@ import pygame
 from Map import Map
 from Player import Player
 from Room import Room
-from puzzle import buttonPuzzle
 
 # inventory display?
 
@@ -116,22 +115,6 @@ def drawViewport(mapObject,playerObject,screen):
                 screen.blit(roomLeft, (60, 60))
             if not (playerCoords[0] - 1 >= 0 and mapLayoutArray[playerCoords[0]-1, playerCoords[1]] != 0):
                 screen.blit(roomRight, (60, 60))
-        # draw encounter if room not cleared
-        if not roomData.getisClear():
-            if roomData.getisPuzzle():
-
-                #Button puzzle Test
-                #(Need to determine best way to trigger and deal with puzzles/combat)
-                #buttonPuzzle(screen,playerCoords,roomData)
-
-                roomImage = pygame.image.load('img/puzzleImage.png').convert()
-                screen.blit(roomImage, (102, 102))
-            elif roomData.getisCombat():
-                roomImage = pygame.image.load('img/combatImage.png').convert()
-                screen.blit(roomImage, (102, 102))
-            elif roomData.getisTreasure():
-                roomImage = pygame.image.load('img/treasureImage.png').convert()
-                screen.blit(roomImage, (102, 102))
     except IndexError:
         # pointless line to silence error
         silencer = True

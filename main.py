@@ -6,6 +6,13 @@ import pygame
 import displayFunctions as disp
 from Map import Map
 from Player import Player
+import puzzle
+import combat
+import treasure
+from combat import combatPlaceholder
+from puzzle import puzzlePlaceholder
+from treasure import treasurePlaceholder
+
 
 # classes to handle player/inventory, map, minimap, enemies?
 
@@ -155,9 +162,31 @@ def main():
         disp.drawMiniMap(map, player, screen)
         disp.drawHealthBar(screen, player)
 
+        #Puzzle/Combat/Treasure logic
+        #Important vars
+        playerCoords = player.GetPosition()
+        roomData = map.getRoomData()[playerCoords[0]][playerCoords[1]]
+
+        # draw encounter and provide logic if room not cleared
+        if not roomData.getisClear():
+            #Setting player cleared as false
+            player.setClearedFalse()
+            #puzzle rooms
+            if roomData.getisPuzzle():
+                puzzlePlaceholder(screen)
+            #combat rooms
+            elif roomData.getisCombat():
+                combatPlaceholder(screen)
+            #treasure rooms
+            elif roomData.getisTreasure():
+                treasurePlaceholder(screen)
+
+        """
+        Can add logic to above if statement for different random puzzle room and monster room spawns potentially
+        EACH FUNCTION FOR TREASURE, COMBAT, AND PUZZLE WILL NEED TO HAVE A FLAG TO SET BOTH PLAYER AND ROOM AS CLEARED
+        """
 
         # eventually update this part to handle button clicks
-
 
         # flip() the display to put your work on screen
         pygame.display.flip()
