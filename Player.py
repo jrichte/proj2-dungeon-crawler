@@ -33,6 +33,10 @@ class Player():
     # setter functions
     def ApplyHPChange(self, hpChange):
         self.__currentHP += hpChange
+        if self.__currentHP > self.__maxHP:
+            self.__currentHP = self.__maxHP
+        if self.__currentHP < 0:
+            self.__currentHP = 0
     def ChangeMaxHP(self, hpAdjust):
         self.__maxHP += hpAdjust
     def AddItemToInventory(self, newItem):
