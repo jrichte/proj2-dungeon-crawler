@@ -188,6 +188,9 @@ def main():
                     # puzzle rooms
                 if roomData.getisPuzzle():
                     randState = puzzle.buttonInit()
+                    b1 = False
+                    b2 = False
+                    b3 = False
                     # combat rooms
                 elif roomData.getisCombat():
                     combatPlaceholder(screen)
@@ -197,7 +200,7 @@ def main():
                 encounterInit = True
             else:
                 if roomData.getisPuzzle():
-                    puzzle.buttonPuzzle(screen,randState)
+                    b1,b2,b3=puzzle.buttonPuzzle(screen,randState,player,map,b1,b2,b3)
                     # combat rooms
                 elif roomData.getisCombat():
                     combatPlaceholder(screen)
@@ -212,10 +215,9 @@ def main():
                 if event.type == pygame.MOUSEBUTTONDOWN:
                     pos = pygame.mouse.get_pos()
                     coords = player.GetPosition()
-                    if pos[0] in range(60,340) and pos[1] in range(60,300):
+                    if pos[0] in range(60,340) and pos[1] in range(60,300) and not map.getRoomData()[coords[0]][coords[1]].getisPuzzle():
                         player.setClearedTrue()
                         map.getRoomData()[coords[0]][coords[1]].cleared()
-
 
         """
         Can add logic to above if statement for different random puzzle room and monster room spawns potentially
