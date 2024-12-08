@@ -124,8 +124,9 @@ def buttonPuzzle(screen,r,player,map,b1,b2,b3):
         playerCoords = player.GetPosition()
         #Clearing map
         map.getRoomData()[playerCoords[0]][playerCoords[1]].cleared()
-        #Clearing player
+        # check map end
         player.setClearedTrue()
+        map.setAllClear()
 
     return b1,b2,b3
 

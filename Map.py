@@ -22,6 +22,7 @@ class Map():
         self._sizeX = sizeX
         self._sizeY = sizeY
         self._roomData = []
+        self._allClear = False
 
     #GETTERS
     #layout Getter
@@ -36,6 +37,9 @@ class Map():
     #roomData Getter
     def getRoomData(self):
         return self._roomData
+    #allClear Getter
+    def getAllClear(self):
+        return self._allClear
 
     # Function to convert list into more palatable array
     def makeArray(self):
@@ -264,7 +268,15 @@ class Map():
                 if self._roomData[rowNum][colNum] == 1:
                     self._roomData[rowNum][colNum] = Room()
 
-
+    def setAllClear(self):
+        clearFlag = True
+        for rowNum, row in enumerate(self._roomData):
+            for colNum, col in enumerate(self._roomData):
+                if self._roomData[rowNum][colNum] != 0:
+                    if self._roomData[rowNum][colNum].getisClear() == False:
+                        clearFlag = False
+        if clearFlag == True:
+            self._allClear = True
 #Testing runs
 """
 dimX = int(input("Please input a dimension for the X size of your map: "))

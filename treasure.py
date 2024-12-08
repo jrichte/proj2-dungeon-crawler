@@ -45,6 +45,8 @@ def treasureEvent(screen,r,player,map):
             map.getRoomData()[playerCoords[0]][playerCoords[1]].cleared()
             # Clearing player
             player.setClearedTrue()
+            # check map end
+            map.setAllClear()
 
 
     #if player does thing:

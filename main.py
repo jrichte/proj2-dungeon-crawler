@@ -179,7 +179,11 @@ def main():
         disp.drawViewport(map, player, screen)
         disp.drawMiniMap(map, player, screen)
         disp.drawHealthBar(screen, player)
-
+        if map.getAllClear() == True:
+            disp.drawWin(screen)
+            for event in pygame.event.get():
+                if event.type == pygame.QUIT:
+                    running = False
 
         if player.GetCleared() == False:
             # initialize each encounter once
@@ -200,6 +204,7 @@ def main():
                 elif roomData.getisNothing():
                     player.setClearedTrue()
                     roomData.cleared()
+                    map.setAllClear()
                 encounterInit = True
             else:
                 if roomData.getisPuzzle():
