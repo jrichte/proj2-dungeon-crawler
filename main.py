@@ -9,7 +9,7 @@ from Player import Player
 import puzzle
 import combat
 import treasure
-from combat import combatPlaceholder
+from combat import combatInit, combatEncounter
 from puzzle import puzzlePlaceholder
 from treasure import treasurePlaceholder
 
@@ -167,11 +167,8 @@ def main():
                         elif facing == 3:
                             player.MoveCoordinates([-1, 0], map)
 
-
-
-
         # fill the screen with a color to wipe away anything from last frame
-        screen.fill("purple")
+        screen.fill("black")
 
         # RENDER YOUR GAME HERE
         # render UI
@@ -181,6 +178,9 @@ def main():
         disp.drawHealthBar(screen, player)
         if map.getAllClear() == True:
             disp.drawWin(screen)
+        if player.GetHP() == 0:
+            player.setClearedFalse()
+            disp.drawLose(screen)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
@@ -197,7 +197,21 @@ def main():
                     b3 = False
                     # combat rooms
                 elif roomData.getisCombat():
-                    combatPlaceholder(screen)
+                    cb1 = [0, 0, True]
+                    cb2 = [0, 0, True]
+                    cb3 = [0, 0, True]
+                    cb4 = [0, 0, True]
+                    cb5 = [0, 0, True]
+                    cb6 = [0, 0, True]
+                    if "Sword" in player.GetInventory():
+                        hasWep = True
+                    else:
+                        hasWep = False
+                    if "Armor" in player.GetInventory():
+                        hasArm = True
+                    else:
+                        hasArm = False
+                    combatInit(cb1,cb2,cb3,cb4,cb5,cb6)
                     # treasure rooms
                 elif roomData.getisTreasure():
                     randState = treasure.treasureInit()
@@ -211,7 +225,11 @@ def main():
                     b1,b2,b3=puzzle.buttonPuzzle(screen,randState,player,map,b1,b2,b3)
                     # combat rooms
                 elif roomData.getisCombat():
-                    combatPlaceholder(screen)
+                    if "Armor" in player.GetInventory():
+                        hasArm = True
+                    else:
+                        hasArm = False
+                    cb1,cb2,cb3,cb4,cb5,cb6=combatEncounter(screen,player,cb1,cb2,cb3,cb4,cb5,cb6,hasWep,hasArm,map)
                     # treasure rooms
                 elif roomData.getisTreasure():
                     treasure.treasureEvent(screen,randState,player,map)
@@ -220,17 +238,6 @@ def main():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     running = False
-                if event.type == pygame.MOUSEBUTTONDOWN:
-                    pos = pygame.mouse.get_pos()
-                    coords = player.GetPosition()
-                    if pos[0] in range(60,340) and pos[1] in range(60,300) and not roomData.getisPuzzle():
-                        player.setClearedTrue()
-                        roomData.cleared()
-
-        """
-        Can add logic to above if statement for different random puzzle room and monster room spawns potentially
-        EACH FUNCTION FOR TREASURE, COMBAT, AND PUZZLE WILL NEED TO HAVE A FLAG TO SET BOTH PLAYER AND ROOM AS CLEARED
-        """
 
         # eventually update this part to handle button clicks
 

@@ -38,7 +38,11 @@ def treasureEvent(screen,r,player,map):
             elif r == 2:
                 player.AddItemToInventory("Armor")
             elif r == 3:
-                player.ApplyHPChange(2)
+                if player.GetMaxHP() == player.GetHP():
+                    player.ChangeMaxHP(1)
+                    player.ApplyHPChange(1)
+                else:
+                    player.ApplyHPChange(1)
             # Storing player coords
             playerCoords = player.GetPosition()
             # Clearing map

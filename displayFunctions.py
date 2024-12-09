@@ -19,6 +19,11 @@ def drawWin(screen):
     win.set_colorkey((255, 255, 255))
     screen.blit(win, (116, 150))
 
+def drawLose(screen):
+    lose = pygame.image.load('img/lose.png').convert()
+    lose.set_colorkey((255, 255, 255))
+    screen.blit(lose,(116,150))
+
 def drawMiniMap(mapObject, playerObject, screen):
     """
     Draws minimap visuals based on player location and map tiles.
@@ -162,10 +167,27 @@ def drawHealthBar(screen, player):
 
     #Drawing gray (border) under red under green rect for hp bar, Formatted (X start, Y start, Length, Width)
     #Ratio Applied to green bar length
-    pygame.draw.rect(screen, "gray", (60,325,280,35))
+    #Making border yellow if player has armor
+    if "Armor" in player.GetInventory():
+        pygame.draw.rect(screen, "yellow", (60,325,280,35))
+    else:
+        pygame.draw.rect(screen, "gray", (60, 325, 280, 35))
     pygame.draw.rect(screen, "red", (90,330,250,25))
     pygame.draw.rect(screen, "green", (90,330,250 * ratio, 25))
+
+    #Displaying text on health bar
+    cHP = player.GetHP()
+    mHP = player.GetMaxHP()
+    Font = pygame.font.SysFont("Arial",26, True)
+    hptext = Font.render(f"{cHP}/{mHP}", 1, 'black')
+    screen.blit(hptext, (195,327))
 
     #Drawing health Icon
     healthIcon = pygame.image.load('img/HealthIcon.png').convert_alpha()
     screen.blit(healthIcon,(65,333))
+
+    #Drawing Weapon Icon (if weapon)
+    if "Sword" in player.GetInventory():
+        s = pygame.image.load('img/weapon.png').convert()
+        s.set_colorkey((255,255,255))
+        screen.blit(s,(-60,300))
