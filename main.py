@@ -199,7 +199,7 @@ def main():
         disp.drawMiniMap(map, player, screen)
         disp.drawHealthBar(screen, player)
         # draw win message if win
-        if map.getAllClear() == False:
+        if map.getAllClear() == True:
             disp.drawWin(screen)
             winSoundFlag = False
             while winSoundFlag == False:
