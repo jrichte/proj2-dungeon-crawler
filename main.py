@@ -24,7 +24,21 @@ def main():
     pygame.init()
     screen = pygame.display.set_mode((600, 400))
     clock = pygame.time.Clock()
+
     running = True
+
+    tutorialMessage = True
+    while running and tutorialMessage:
+        tutorial = pygame.image.load('img/tutorial.png').convert()
+        screen.blit(tutorial, (0, 0))
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                running = False
+            if event.type == pygame.MOUSEBUTTONDOWN:
+                tutorialMessage = False
+        pygame.display.flip()
+
+
 
     X_DIM = 16
     Y_DIM = 16
@@ -36,7 +50,11 @@ def main():
     map.getRoomData()[int(X_DIM/2)][int(Y_DIM/2)].visited()
     map.getRoomData()[int(X_DIM/2)][int(Y_DIM/2)].cleared()
     encounterInit = False
-    while running:
+    pygame.mixer.music.load('bgm/music.wav')
+    pygame.mixer.music.play(-1)
+    pygame.mixer.music.set_volume(0.5)
+    while running and not tutorialMessage:
+
         #Puzzle/Combat/Treasure logic
         #Important vars
         playerCoords = player.GetPosition()
@@ -178,6 +196,9 @@ def main():
         disp.drawHealthBar(screen, player)
         if map.getAllClear() == True:
             disp.drawWin(screen)
+            pygame.mixer.music.stop()
+            win_sound = pygame.mixer.Sound("bgm/win.wav")
+            pygame.mixer.Sound.play(win_sound)
         if player.GetHP() == 0:
             player.setClearedFalse()
             disp.drawLose(screen)

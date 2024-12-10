@@ -62,6 +62,8 @@ class Player():
                         if mapLayout[(self.__currentPosition[0] + movement[0]),(self.__currentPosition[1] + movement[1])] != 0:
                                 self.__currentPosition[i] += movement[i]
                                 roomData[self.__currentPosition[0]][self.__currentPosition[1]].visited()
+                                step_sound = pygame.mixer.Sound("bgm/step.wav")
+                                pygame.mixer.Sound.play(step_sound)
                     except IndexError:
                         return
     def RotateLeft(self):

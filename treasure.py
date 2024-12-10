@@ -43,6 +43,8 @@ def treasureEvent(screen,r,player,map):
                     player.ApplyHPChange(1)
                 else:
                     player.ApplyHPChange(1)
+            item_sound = pygame.mixer.Sound("bgm/item.wav")
+            pygame.mixer.Sound.play(item_sound)
             # Storing player coords
             playerCoords = player.GetPosition()
             # Clearing map

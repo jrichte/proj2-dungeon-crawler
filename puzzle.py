@@ -67,6 +67,7 @@ def buttonPuzzle(screen,r,player,map,b1,b2,b3):
     if b3 == True:
         colorSequence[2] = "White"
 
+    beep_sound = pygame.mixer.Sound("bgm/beep.wav")
 
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -77,40 +78,49 @@ def buttonPuzzle(screen,r,player,map,b1,b2,b3):
             if r == 1 or r == 2:
                 if pos[0] in range(142,158) and pos[1] in range(192,208):
                     b1 = True
+                    pygame.mixer.Sound.play(beep_sound)
             #Green Button
             elif r == 5 or r == 6:
                 if pos[0] in range(192, 208) and pos[1] in range(192, 208):
                     b1 = True
+                    pygame.mixer.Sound.play(beep_sound)
             #Blue Button
             elif r == 3 or r == 4:
                 if pos[0] in range(242, 258) and pos[1] in range(192, 208):
                     b1 = True
+                    pygame.mixer.Sound.play(beep_sound)
 
             #Red Second Button
             if (r == 3 or r == 5) and (b1 == True):
                 if pos[0] in range(142,158) and pos[1] in range(192,208):
                     b2 = True
+                    pygame.mixer.Sound.play(beep_sound)
             #Green Second Button:
             elif (r == 2 or r == 4) and (b1 == True):
                 if pos[0] in range(192, 208) and pos[1] in range(192, 208):
                     b2 = True
+                    pygame.mixer.Sound.play(beep_sound)
             #Blue Second Button
             elif (r == 1 or r == 6) and (b1 == True):
                 if pos[0] in range(242, 258) and pos[1] in range(192, 208):
                     b2 = True
+                    pygame.mixer.Sound.play(beep_sound)
 
             # Red Third Button
             if (r == 4 or r == 6) and (b2 == True):
                 if pos[0] in range(142, 158) and pos[1] in range(192, 208):
                     b3 = True
+                    pygame.mixer.Sound.play(beep_sound)
             # Green Third Button:
             elif (r == 1 or r == 3) and (b2 == True):
                 if pos[0] in range(192, 208) and pos[1] in range(192, 208):
                     b3 = True
+                    pygame.mixer.Sound.play(beep_sound)
             # Blue Third Button
             elif (r == 2 or r == 5) and (b2 == True):
                 if pos[0] in range(242, 258) and pos[1] in range(192, 208):
                     b3 = True
+                    pygame.mixer.Sound.play(beep_sound)
 
 
     if b3:

@@ -69,6 +69,8 @@ def combatEncounter(screen,player,cb1,cb2,cb3,cb4,cb5,cb6,hasWep,hasArm,map):
 
         #Click check logic
         pos = pygame.mouse.get_pos()
+        slash_sound = pygame.mixer.Sound("bgm/slash.wav")
+        hurt_sound = pygame.mixer.Sound("bgm/hurt.wav")
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
@@ -77,28 +79,36 @@ def combatEncounter(screen,player,cb1,cb2,cb3,cb4,cb5,cb6,hasWep,hasArm,map):
                 # button 1
                 if pos[0] in range(cb1[0]-5,cb1[0]+5) and pos[1] in range(cb1[1]-5,cb1[1]+5) and cb1[2]:
                     cb1[2] = False
+                    pygame.mixer.Sound.play(slash_sound)
                 # button 2
                 elif pos[0] in range(cb2[0]-5,cb2[0]+5) and pos[1] in range(cb2[1]-5,cb2[1]+5) and cb2[2]:
                     cb2[2] = False
+                    pygame.mixer.Sound.play(slash_sound)
                 # button 3
                 elif pos[0] in range(cb3[0]-5,cb3[0]+5) and pos[1] in range(cb3[1]-5,cb3[1]+5) and cb3[2]:
                     cb3[2] = False
+                    pygame.mixer.Sound.play(slash_sound)
                 # button 4
                 elif pos[0] in range(cb4[0]-5,cb4[0]+5) and pos[1] in range(cb4[1]-5,cb4[1]+5) and cb4[2]:
                     cb4[2] = False
+                    pygame.mixer.Sound.play(slash_sound)
                 # button 5
                 elif pos[0] in range(cb5[0]-5,cb5[0]+5) and pos[1] in range(cb5[1]-5,cb5[1]+5) and cb5[2]:
                     cb5[2] = False
+                    pygame.mixer.Sound.play(slash_sound)
                 # button 6
                 elif pos[0] in range(cb6[0]-5,cb6[0]+5) and pos[1] in range(cb6[1]-5,cb6[1]+5) and cb6[2]:
                     cb6[2] = False
+                    pygame.mixer.Sound.play(slash_sound)
 
                 #Misclick logic (taking damage)
                 else:
                     if hasArm:
                         player.GetInventory().remove("Armor")
+                        pygame.mixer.Sound.play(hurt_sound)
                     else:
                         player.ApplyHPChange(-1)
+                        pygame.mixer.Sound.play(hurt_sound)
 
         #Completion Check
         if hasWep and (cb1[2] == False) and (cb2[2] == False) and (cb3[2] == False):
