@@ -27,6 +27,7 @@ def main():
 
     running = True
 
+    # run tutorial screen when booting
     tutorialMessage = True
     while running and tutorialMessage:
         tutorial = pygame.image.load('img/tutorial.png').convert()
@@ -39,7 +40,7 @@ def main():
         pygame.display.flip()
 
 
-
+    # initialize map, player, music
     X_DIM = 16
     Y_DIM = 16
     map = Map(X_DIM, Y_DIM)
@@ -53,6 +54,8 @@ def main():
     pygame.mixer.music.load('bgm/music.wav')
     pygame.mixer.music.play(-1)
     pygame.mixer.music.set_volume(0.5)
+
+    # main game loop
     while running and not tutorialMessage:
 
         #Puzzle/Combat/Treasure logic
@@ -60,12 +63,13 @@ def main():
         playerCoords = player.GetPosition()
         roomData = map.getRoomData()[playerCoords[0]][playerCoords[1]]
 
+        # if room isn't clear, set player as not clear
         if not roomData.getisClear():
             # Setting player cleared as false
             player.setClearedFalse()
 
 
-        # poll for events
+        # if room cleared, allow movement
         if player.GetCleared() == True:
             # reset flag for initializing room
             encounterInit = False
@@ -194,11 +198,16 @@ def main():
         disp.drawViewport(map, player, screen)
         disp.drawMiniMap(map, player, screen)
         disp.drawHealthBar(screen, player)
-        if map.getAllClear() == True:
+        # draw win message if win
+        if map.getAllClear() == False:
             disp.drawWin(screen)
-            pygame.mixer.music.stop()
-            win_sound = pygame.mixer.Sound("bgm/win.wav")
-            pygame.mixer.Sound.play(win_sound)
+            winSoundFlag = False
+            while winSoundFlag == False:
+                pygame.mixer.music.stop()
+                win_sound = pygame.mixer.Sound("bgm/win.wav")
+                pygame.mixer.Sound.play(win_sound)
+                winSoundFlag = True
+        # drw lose message if lose
         if player.GetHP() == 0:
             player.setClearedFalse()
             disp.drawLose(screen)
@@ -206,6 +215,7 @@ def main():
                 if event.type == pygame.QUIT:
                     running = False
 
+        # room encounter logic if uncleared
         if player.GetCleared() == False:
             # initialize each encounter once
             if encounterInit == False:
@@ -241,6 +251,7 @@ def main():
                     roomData.cleared()
                     map.setAllClear()
                 encounterInit = True
+            # after encounter is initialized, run persistent combat loop
             else:
                 if roomData.getisPuzzle():
                     b1,b2,b3=puzzle.buttonPuzzle(screen,randState,player,map,b1,b2,b3)
@@ -260,14 +271,10 @@ def main():
                 if event.type == pygame.QUIT:
                     running = False
 
-        # eventually update this part to handle button clicks
-
         # flip() the display to put your work on screen
         pygame.display.flip()
 
         # limits FPS to 60
-        # dt is delta time in seconds since last frame, used for framerate-
-        # independent physics.
         dt = clock.tick(60) / 1000
 
     pygame.quit()

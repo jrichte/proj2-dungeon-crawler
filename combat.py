@@ -8,10 +8,24 @@ import pygame
 global cb1,cb2,cb3,cb4,cb5,cb6,hasWep,hasArm
 
 def combatPlaceholder(screen):
+    """
+    placeholder for testing combat
+    :param screen:
+    :return:
+    """
     roomImage = pygame.image.load('img/combatImage.png').convert()
     screen.blit(roomImage, (102, 102))
 
 def combatInit(cb1,cb2,cb3,cb4,cb5,cb6):
+    """
+    Initializes combat random states. Each parameter is a three element list.
+    :param cb1:
+    :param cb2:
+    :param cb3:
+    :param cb4:
+    :param cb5:
+    :param cb6:
+    """
     # button 1
     cb1[0] = random.randint(130,270)
     cb1[1] = random.randint(80,285)
@@ -38,7 +52,21 @@ def combatInit(cb1,cb2,cb3,cb4,cb5,cb6):
 
 
 def combatEncounter(screen,player,cb1,cb2,cb3,cb4,cb5,cb6,hasWep,hasArm,map):
-
+    """
+    Handles combat encounters.
+    :param screen: Screen to draw onto.
+    :param player: player object.
+    :param cb1: Target 1 location/state list.
+    :param cb2: Target 2 location/state list.
+    :param cb3: Target 3 location/state list.
+    :param cb4: Target 4 location/state list.
+    :param cb5: Target 5 location/state list.
+    :param cb6: Target 6 location/state list.
+    :param hasWep: Boolean for player weapon.
+    :param hasArm: Boolean for player armor.
+    :param map: map object.
+    :return: Returns updated target states.
+    """
     #Goblin Import
     if player.GetHP() != 0:
         goblin = pygame.image.load('img/Goblin.png').convert()

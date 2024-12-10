@@ -15,11 +15,19 @@ MINIMAP_YSIZE = 160
 MINIMAP_YPOS = 60
 
 def drawWin(screen):
+    """
+    Draws victory message.
+    :param screen: Screen to draw onto.
+    """
     win = pygame.image.load('img/win.png').convert()
     win.set_colorkey((255, 255, 255))
     screen.blit(win, (116, 150))
 
 def drawLose(screen):
+    """
+    Draws lose message.
+    :param screen: Screen to draw onto.
+    """
     lose = pygame.image.load('img/lose.png').convert()
     lose.set_colorkey((255, 255, 255))
     screen.blit(lose,(116,150))

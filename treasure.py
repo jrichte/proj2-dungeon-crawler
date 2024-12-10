@@ -8,14 +8,30 @@ import Room
 import Player
 
 def treasureInit():
+    """
+    Initializes treasure random state.
+    :return: Returns an int from 1-3, inclusive.
+    """
     r = random.randint(1, 3)
     return r
 
 def treasurePlaceholder(screen):
+    """
+    placeholder function for testing treasure
+    :param screen:
+    :return:
+    """
     roomImage = pygame.image.load('img/treasureImage.png').convert()
     screen.blit(roomImage, (102, 102))
 
 def treasureEvent(screen,r,player,map):
+    """
+    Function for handling treasure gets.
+    :param screen: The screen to display on.
+    :param r: Random int from 1-3, via treasureInit.
+    :param player: Player object.
+    :param map: Map object.
+    """
     if r == 1:
         # weapon
         itemIcon = pygame.image.load('img/weapon.png').convert()

@@ -48,6 +48,11 @@ class Player():
     def setClearedFalse(self):
         self.__cleared = False
     def MoveCoordinates(self, movement, mapObject):
+        """
+        Player movement function.
+        :param movement: A two-element list indicating movement direction.
+        :param mapObject: Map object along which to move.
+        """
         mapLayout = mapObject.getLayout()
         roomData = mapObject.getRoomData()
         roomData[self.__currentPosition[0]][self.__currentPosition[1]].cleared()

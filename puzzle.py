@@ -9,15 +9,34 @@ import Room
 global b1,b2,b3
 
 def puzzlePlaceholder(screen):
+    """
+    placeholder function for testing puzzles
+    :param screen:
+    :return:
+    """
     roomImage = pygame.image.load('img/puzzleImage.png').convert()
     screen.blit(roomImage, (102, 102))
 
 def buttonInit():
+    """
+    Initializes random state for button puzzle.
+    :return: Returns a random int from 1-6, inclusive.
+    """
     r = random.randint(1, 6)
     return r
 
 def buttonPuzzle(screen,r,player,map,b1,b2,b3):
-
+    """
+    Function for handling button puzzle.
+    :param screen: Screen to display to.
+    :param r: Random state from buttonInit.
+    :param player: player object.
+    :param map: map object.
+    :param b1: Variable for tracking puzzle progress over multiple calls.
+    :param b2: Variable for tracking puzzle progress over multiple calls.
+    :param b3: Variable for tracking puzzle progress over multiple calls.
+    :return: Returns new b1, b2, b3 values.
+    """
     #Tablet import
     tablet = pygame.image.load('img/puzzleTablet.png').convert()
     tablet.set_colorkey((255,255,255))
